@@ -1,9 +1,11 @@
-#include <iostream>
-#include <cctype>
-#include <cstdlib>
-using namespace std;
+#include <stdlib.h>
+#include <stdio.h>
+#include <conio.h>
 
-const int SIZE = 100;
+
+
+int SIZE = 5;
+
 
 struct contact {
 	char name[40];
@@ -15,7 +17,7 @@ void update(), input(int i);
 void find(), del();
 int menu(), mystrcmp(char a[], char b[]);
 
-contact *reference;
+contact * reference;
 
 
 int main()
@@ -28,8 +30,9 @@ int main()
 
 	for (;;){
 		choice = menu();
+		
 		switch (choice){
-		case 'e': enter();
+		case 'e': enter();			
 			break;
 		case 's': show();
 			break;
@@ -57,14 +60,14 @@ void del()
 	int i;
 	char name[80];
 
-	cout << "vvedite imya: ";
-	cin >> name;
+	printf("vvedite imya: ");
+	scanf_s("%s", name, _countof(name));
 
 	for (i = 0; i < SIZE; i++)
 	if (mystrcmp(name, reference[i].name)) break;
 
 	if (i == SIZE) {
-		cout << "kontakt ne naiden: ";
+		printf("kontakt ne naiden: ");
 		return;
 	}
 
@@ -76,16 +79,16 @@ int menu()
 	char ch;
 	
 
-	cout << '\n';
-	cout << "(e)nter\n";
-	cout << "(s)how\n";
-	cout << "(d)elete\n";
-	cout << "(f)ind\n";
-	cout << "(u)pdte\n";
-	cout << "(q)uit\n\n";
-	cout << "vyberite komandu";
-	cin >> ch;
-
+	printf("\n");
+	printf("(e)nter\n");
+	printf("(s)how\n");
+	printf("(d)elete\n");
+	printf("(f)ind\n");
+	printf("(u)pdte\n");
+	printf("(q)uit\n\n");
+	printf("vyberite komandu");
+	ch = _getch();
+	
 
 	return ch;
 }
@@ -97,20 +100,23 @@ void enter()
 	if (!*reference[i].name) break;
 
 	if (i == SIZE){
-		cout << "spisok polon.\n";
-		return;
+		SIZE++;
+		reference = (contact *) realloc(reference, SIZE*sizeof(contact));
+		*reference[i].name = '\0';
+		
 	}
 
 	input(i);
+	
 }
 
 void input(int i)
 {
-	cout << "imya: ";
-	cin >> reference[i].name;	
+	printf("imya: ");
+	scanf_s("%s", reference[i].name, _countof(reference[i].name));
 
-	cout << "nomer telefona: ";
-	cin >> reference[i].tel_number;
+	printf("nomer telefona: ");
+	scanf_s("%d", &reference[i].tel_number, 5);
 
 }
 
@@ -119,17 +125,17 @@ void update()
 	int i;
 	char name[80];
 
-	cout << "vvedite imya: ";
-	cin >> name;
+	printf("vvedite imya: ");
+	scanf_s("%s", name, _countof(name));
 
 	for (i = 0; i < SIZE; i++)
 	if (mystrcmp(name, reference[i].name)) break;
 
 	if (i == SIZE) {
-		cout << "kontakt ne naiden: ";
+		printf("kontakt ne naiden: ");
 		return;
 	}
-	cout << "vvedite novuy informaciy: \n";
+	printf("vvedite novuy informaciy: \n");
 	input(i);
 }
 
@@ -139,7 +145,8 @@ void show()
 
 	for (t = 0; t < SIZE; t++) {
 		if (*reference[t].name) {
-			cout << reference[t].name << " " << reference[t].tel_number << "\n";	
+			printf("%s %d",reference[t].name, reference[t].tel_number);	
+			printf("\n");
 		}
 	}
 }
@@ -148,14 +155,15 @@ void find()
 {
 	int t;
 	char name[40];
-	cout << "vvedite imya: \n";
-	cin >> name;
+	printf("vvedite imya: \n");
+	scanf_s("%s", name, _countof(name));
 	for (t = 0; t < SIZE; t++){
 		if (mystrcmp(name, reference[t].name)){
 			break;
 		}
 	}
-	cout << reference[t].name << reference[t].tel_number << "\n";
+	printf("%s %d", reference[t].name, reference[t].tel_number);
+	printf("\n");
 }
 
 int mystrcmp(char a[], char b[])
